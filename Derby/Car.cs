@@ -28,7 +28,7 @@ namespace Derby
         public string Direction { get; set; }
 
         public Car()
-            : this(14.1)
+            : this(15)
         {
 
         }
