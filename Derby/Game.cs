@@ -7,18 +7,21 @@ namespace Derby
     public class Game
     {
         public Car Player { get; set; }
+        public Car Opponent { get; set; }
 
         public void Run()
         {
-            //Console.Write("Enter tank capacity: ");
-            //double capacity = double.Parse(Console.ReadLine());
-            //Player = new Car(capacity);
-            //Player.StartEngine();
+            DrawMap(24, 79);
+            Player = new Car(600);
+            Player.StartEngine();
+            Player.Display();
+            Opponent = new Car(600);
+            Opponent.StartEngine();
+            Opponent.Display();
             //Player.Accelerate();
             //Player.TurnLeft();
             //Player.TurnLeft();
             //Player.TurnRight();
-            DrawMap(24, 79);
         }
 
         public void DrawMap(int height, int width)

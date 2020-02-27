@@ -6,6 +6,13 @@ namespace Derby
 {
     public class Car
     {
+        private static int carCount = 0;
+        private int carNumber;
+        private static Random randomGenerator = new Random();
+
+        public int LocationX { get; set; }
+        public int LocationY { get; set; }
+
         public double TankCapacity { get; set; }
         //public double Gas { get; set; }
         private double gas;
@@ -37,6 +44,10 @@ namespace Derby
             Direction = "North";
             TankCapacity = tankCapacity;
             FillTank();
+            carCount++;
+            carNumber = carCount;
+            LocationX = randomGenerator.Next(1, 78);
+            LocationY = randomGenerator.Next(1, 21);
         }
 
         public void FillTank()
@@ -49,8 +60,6 @@ namespace Derby
             if (Gas > 0)
             {
                 IsEngineRunning = true;
-                Console.WriteLine($"Engine Started!");
-
             }
         }
 
@@ -58,15 +67,44 @@ namespace Derby
         {
             IsEngineRunning = false;
             Speed = 0;
-            Console.WriteLine("Engine Stopped.");
         }
 
+        public void MakeRandomMovement()
+        {
+            switch (randomGenerator.Next(1, 7))
+            {
+                case 1:
+                    TurnLeft();
+                    break;
+                case 2:
+                    TurnRight();
+                    break;
+                default:
+                    Accelerate();
+                    break;
+
+            }
+        }
         public void Accelerate()
         {
             if (IsEngineRunning)
             {
                 Speed++;
-                Console.WriteLine("Vroom!!");
+                switch (Direction)
+                {
+                    case "North":
+                        LocationY--;
+                        break;
+                    case "South":
+                        LocationY++;
+                        break;
+                    case "West":
+                        LocationX--;
+                        break;
+                    case "East":
+                        LocationX++;
+                        break;
+                }
                 Gas--;
                 if (Gas == 0)
                 {
@@ -80,7 +118,6 @@ namespace Derby
             if (IsEngineRunning && (Speed > 0))
             {
                 Speed--;
-                Console.WriteLine("Screech!");
             }
         }
 
@@ -126,5 +163,13 @@ namespace Derby
 
         }
 
+        public void Display()
+        {
+            int cursorLeft = Console.CursorLeft;
+            int cursorTop = Console.CursorTop;
+            Console.SetCursorPosition(LocationX, LocationY);
+            Console.Write(carNumber);
+            Console.SetCursorPosition(cursorLeft, cursorTop);
+        }
     }
 }
