@@ -9,19 +9,79 @@ namespace Derby
         public Car Player { get; set; }
         public Car Opponent { get; set; }
 
+        private bool isPlaying = true;
+
         public void Run()
         {
-            DrawMap(24, 79);
+            InitializeGame();
+            do
+            {
+                ProcessInput();
+                UpdateGame();
+                RenderOutput();
+            } while (isPlaying);
+        }
+
+        private void RenderOutput()
+        {
+            if (invalidated)
+            {
+                Console.Clear();
+                DrawMap(24, 79);
+                Player.Display();
+                Opponent.Display();
+                invalidated = false;
+            }
+        }
+
+        private DateTime gameTime = DateTime.Now;
+        private void UpdateGame()
+        {
+            int updateInterval = 500; // 1/2 a second
+            if (DateTime.Now.Subtract(gameTime) > 
+                TimeSpan.FromMilliseconds(updateInterval))
+            {
+                Opponent.MakeRandomMovement();
+                invalidated = true;
+                gameTime = DateTime.Now;
+            }
+        }
+
+        private bool invalidated = true;
+        private void ProcessInput()
+        {
+            ConsoleKeyInfo keyInfo;
+            if (Console.KeyAvailable)
+            {
+                keyInfo = Console.ReadKey();
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        Player.Accelerate();
+                        invalidated = true;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        Player.TurnLeft();
+                        invalidated = true;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        Player.TurnRight();
+                        invalidated = true;
+                        break;
+                    case ConsoleKey.Q:
+                        isPlaying = false;
+                        break;
+                }
+            }
+        }
+
+
+        private void InitializeGame()
+        {
             Player = new Car(600);
             Player.StartEngine();
-            Player.Display();
             Opponent = new Car(600);
             Opponent.StartEngine();
-            Opponent.Display();
-            //Player.Accelerate();
-            //Player.TurnLeft();
-            //Player.TurnLeft();
-            //Player.TurnRight();
         }
 
         public void DrawMap(int height, int width)
