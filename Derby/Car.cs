@@ -10,8 +10,33 @@ namespace Derby
         private int carNumber;
         private static Random randomGenerator = new Random();
 
-        public int LocationX { get; set; }
-        public int LocationY { get; set; }
+        private int locationX;
+
+        public int LocationX
+        {
+            get { return locationX; }
+            set
+            {
+                if (value > 0 && value < 79)
+                {
+                    locationX = value;
+                }
+            }
+        }
+
+        private int locationY;
+
+        public int LocationY
+        {
+            get { return locationY; }
+            set
+            {
+                if (value > 0 && value < 24)
+                {
+                    locationY = value;
+                }
+            }
+        }
 
         public double TankCapacity { get; set; }
         //public double Gas { get; set; }

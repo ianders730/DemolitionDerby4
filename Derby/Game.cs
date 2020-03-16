@@ -7,10 +7,22 @@ namespace Derby
     public class Game
     {
         public Car Player { get; set; }
-        public Car Opponent { get; set; }
+        public Car[] Opponents { get; set; }
+
+        private void InitializeGame()
+        {
+            Player = new Car(600);
+            Player.StartEngine();
+            Opponents = new Car[9];
+            for (int i = 0; i < Opponents.Length; i++)
+            {
+                Opponents[i] = new Car(600);
+                Opponents[i].StartEngine();
+            }
+            
+        }
 
         private bool isPlaying = true;
-
         public void Run()
         {
             InitializeGame();
@@ -29,7 +41,11 @@ namespace Derby
                 Console.Clear();
                 DrawMap(24, 79);
                 Player.Display();
-                Opponent.Display();
+                for (int i = 0; i < Opponents.Length; i++)
+                {
+                    Opponents[i].Display();
+                }
+                
                 invalidated = false;
             }
         }
@@ -37,11 +53,15 @@ namespace Derby
         private DateTime gameTime = DateTime.Now;
         private void UpdateGame()
         {
-            int updateInterval = 500; // 1/2 a second
+            int updateInterval = 2000; // 1/2 a second
             if (DateTime.Now.Subtract(gameTime) > 
                 TimeSpan.FromMilliseconds(updateInterval))
             {
-                Opponent.MakeRandomMovement();
+                for (int i = 0; i < Opponents.Length; i++)
+                {
+                    Opponents[i].MakeRandomMovement();
+                }
+                
                 invalidated = true;
                 gameTime = DateTime.Now;
             }
@@ -76,13 +96,6 @@ namespace Derby
         }
 
 
-        private void InitializeGame()
-        {
-            Player = new Car(600);
-            Player.StartEngine();
-            Opponent = new Car(600);
-            Opponent.StartEngine();
-        }
 
         public void DrawMap(int height, int width)
         {
