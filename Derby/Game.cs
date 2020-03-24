@@ -6,20 +6,18 @@ namespace Derby
 {
     public class Game
     {
-        private int numberOpponents = 8;
         public Car Player { get; set; }
-        public List<Car> Opponents { get; set; }
+        public Car[] Opponents { get; set; }
 
         private void InitializeGame()
         {
             Player = new Car(600);
             Player.StartEngine();
-            Opponents = new List<Car>();
-            for (int i = 0; i < numberOpponents; i++)
+            Opponents = new Car[9];
+            for (int i = 0; i < Opponents.Length; i++)
             {
-                Car opponent = new Car(600);
-                opponent.StartEngine();
-                Opponents.Add(opponent);
+                Opponents[i] = new Car(600);
+                Opponents[i].StartEngine();
             }
             
         }
@@ -43,7 +41,7 @@ namespace Derby
                 Console.Clear();
                 DrawMap(24, 79);
                 Player.Display();
-                for (int i = 0; i < Opponents.Count; i++)
+                for (int i = 0; i < Opponents.Length; i++)
                 {
                     Opponents[i].Display();
                 }
@@ -59,10 +57,11 @@ namespace Derby
             if (DateTime.Now.Subtract(gameTime) > 
                 TimeSpan.FromMilliseconds(updateInterval))
             {
-                foreach (var opponent in Opponents)
+                for (int i = 0; i < Opponents.Length; i++)
                 {
-                    opponent.MakeRandomMovement();
+                    Opponents[i].MakeRandomMovement();
                 }
+                
                 invalidated = true;
                 gameTime = DateTime.Now;
             }
