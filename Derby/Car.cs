@@ -10,7 +10,7 @@ namespace Derby
         private int carNumber;
         private static Random randomGenerator = new Random();
 
-        public bool IsVisible { get; set; }
+        public bool Visible { get; set; }
         private int locationX;
 
         public int LocationX
